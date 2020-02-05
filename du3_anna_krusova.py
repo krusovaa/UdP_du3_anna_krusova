@@ -44,11 +44,13 @@ def split_gjs_by_geometry():
                                 polygons_geojson.append(feat)
                             else:
                                 continue
+            # exceptions
                     except json.JSONDecodeError:
                         print('Invalid JSON format: ', filepath)
             except PermissionError:
                 print('Not adequate access rights: ', filepath)
 
+    # export files to geojson format to geometry
     with open("points.geojson", "w", encoding="utf-8") as outfile1:
         json.dump(points_geojson, outfile1, indent=2, ensure_ascii=False)
 
