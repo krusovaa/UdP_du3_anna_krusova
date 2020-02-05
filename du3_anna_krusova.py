@@ -43,7 +43,6 @@ def split_gjs_by_geometry():
                                 add_filepath(feat)
                                 polygons_geojson.append(feat)
                             else:
-                                print('Unable to identify geometry type: ', filepath)
                                 continue
                     except json.JSONDecodeError:
                         print('Invalid JSON format: ', filepath)
