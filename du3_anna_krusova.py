@@ -59,6 +59,3 @@ def split_gjs_by_geometry():
 
     with open("polygons.geojson", "w", encoding="utf-8") as outfile3:
         json.dump(polygons_geojson, outfile3, indent=2, ensure_ascii=False)
-
-
-split_gjs_by_geometry()
