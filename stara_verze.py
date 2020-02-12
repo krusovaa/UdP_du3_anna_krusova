@@ -49,13 +49,16 @@ def split_gjs_by_geometry():
                         print('Invalid JSON format: ', filepath)
             except PermissionError:
                 print('Not adequate access rights: ', filepath)
+    try:
+        # export files to geojson format to geometry
+        with open("points.geojson", "w", encoding="utf-8") as outfile1:
+            json.dump(points_geojson, outfile1, indent=2, ensure_ascii=False)
 
-    # export files to geojson format to geometry
-    with open("points.geojson", "w", encoding="utf-8") as outfile1:
-        json.dump(points_geojson, outfile1, indent=2, ensure_ascii=False)
+        with open("lines.geojson", "w", encoding="utf-8") as outfile2:
+            json.dump(lines_geojson, outfile2, indent=2, ensure_ascii=False)
 
-    with open("lines.geojson", "w", encoding="utf-8") as outfile2:
-        json.dump(lines_geojson, outfile2, indent=2, ensure_ascii=False)
-
-    with open("polygons.geojson", "w", encoding="utf-8") as outfile3:
-        json.dump(polygons_geojson, outfile3, indent=2, ensure_ascii=False)
+        with open("polygons.geojson", "w", encoding="utf-8") as outfile3:
+            json.dump(polygons_geojson, outfile3, indent=2, ensure_ascii=False)
+    # exception
+    except PermissionError:
+        print('Not permission to write in this directory: ', sys.argv[1])
