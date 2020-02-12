@@ -51,14 +51,20 @@ def split_gjs_by_geometry():
                 print('Not adequate access rights: ', filepath)
     try:
         # export files to geojson format to geometry
+        gj_structure_points = {'type': 'FeatureCollection', 'features': points_geojson}
         with open("points.geojson", "w", encoding="utf-8") as outfile1:
-            json.dump(points_geojson, outfile1, indent=2, ensure_ascii=False)
+            json.dump(gj_structure_points, outfile1, indent=2, ensure_ascii=False)
 
+        gj_structure_lines = {'type': 'FeatureCollection', 'features': lines_geojson}
         with open("lines.geojson", "w", encoding="utf-8") as outfile2:
-            json.dump(lines_geojson, outfile2, indent=2, ensure_ascii=False)
+            json.dump(gj_structure_lines, outfile2, indent=2, ensure_ascii=False)
 
+        gj_structure_polygons = {'type': 'FeatureCollection', 'features': polygons_geojson}
         with open("polygons.geojson", "w", encoding="utf-8") as outfile3:
-            json.dump(polygons_geojson, outfile3, indent=2, ensure_ascii=False)
+            json.dump(gj_structure_polygons, outfile3, indent=2, ensure_ascii=False)
     # exception
     except PermissionError:
         print('Not permission to write in this directory: ', sys.argv[1])
+
+
+split_gjs_by_geometry()
