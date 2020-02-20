@@ -1,13 +1,12 @@
 # import modules
 import json
-import os
 import sys
 from pathlib import Path
 
 
-def add_filepath(file):
+def add_filepath(file, path):
     """add absolute path of each file to files's properties"""
-    file['filepath'] = os.path.abspath(str(file))
+    file['properties']['filepath'] = str(path)
 
 
 def split_gjs_by_geometry():
@@ -34,13 +33,13 @@ def split_gjs_by_geometry():
                         for feat in data['features']:
                             # select file by geometry
                             if feat['geometry']['type'] == 'Point':
-                                add_filepath(feat)
+                                add_filepath(feat, filepath)
                                 points_geojson.append(feat)
                             elif feat['geometry']['type'] == 'LineString':
-                                add_filepath(feat)
+                                add_filepath(feat, filepath)
                                 lines_geojson.append(feat)
                             elif feat['geometry']['type'] == 'Polygon':
-                                add_filepath(feat)
+                                add_filepath(feat, filepath)
                                 polygons_geojson.append(feat)
                             else:
                                 continue
@@ -49,6 +48,8 @@ def split_gjs_by_geometry():
                         print('Invalid JSON format: ', filepath)
             except PermissionError:
                 print('Not adequate access rights: ', filepath)
+            except Exception:
+                print('Unknown error: ', filepath)
     try:
         # export files to geojson format to geometry
         gj_structure_points = {'type': 'FeatureCollection', 'features': points_geojson}
@@ -62,9 +63,11 @@ def split_gjs_by_geometry():
         gj_structure_polygons = {'type': 'FeatureCollection', 'features': polygons_geojson}
         with open("polygons.geojson", "w", encoding="utf-8") as outfile3:
             json.dump(gj_structure_polygons, outfile3, indent=2, ensure_ascii=False)
-    # exception
+    # exceptions
     except PermissionError:
         print('Not permission to write in this directory: ', sys.argv[1])
+    except Exception:
+        print('Unknown error in directory: ', sys.argv[1])
 
 
 split_gjs_by_geometry()
